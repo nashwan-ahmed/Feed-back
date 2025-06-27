@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Feedback System</title>
+  <style>
+    body {
+      font-family: Arial;
+      text-align: center;
+      padding: 2rem;
+      background-color: navy;
+      color: white;
+    }
+    button {
+      margin: 1rem;
+      padding: 1rem 2rem;
+      font-size: 1rem;
+      background-color: white;
+      color: navy;
+      border: none;
+      cursor: pointer;
+      border-radius: 8px;
+    }
+    button:disabled {
+      background-color: gray;
+      cursor: not-allowed;
+    }
+    .counts {
+      margin-top: 2rem;
+      font-size: 1.2rem;
+      display: none;
+    }
+    .password-section {
+      margin-top: 3rem;
+    }
+    input[type="password"] {
+      padding: 0.5rem;
+      font-size: 1rem;
+      border-radius: 4px;
+      border: none;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Give Your Feedback</h1>
+  <button id="btnExcellent" onclick="submitFeedback('Excellent')">Excellent</button>
+  <button id="btnGood" onclick="submitFeedback('Good')">Good</button>
+  <button id="btnSatisfactory" onclick="submitFeedback('Satisfactory')">Satisfactory</button>
+  <button id="btnOther" onclick="submitFeedback('Other')">Other</button>
+
+  <div class="password-section">
+    <h3>Enter Password to View Counts</h3>
+    <input type="password" id="passwordInput" placeholder="Enter password">
+    <button onclick="checkPassword()">Submit</button>
+    <p id="errorMsg" style="color: red;"></p>
+  </div>
+
+  <div class="counts" id="countsSection">
+    <h2>Feedback Counts</h2>
+    <p>Excellent: <span id="excellentCount">0</span></p>
+    <p>Good: <span id="goodCount">0</span></p>
+    <p>Satisfactory: <span id="satisfactoryCount">0</span></p>
+    <p>Other: <span id="otherCount">0</span></p>
+  </div>
+
+  <script>
+    const counts = {
+      Excellent: 0,
+      Good: 0,
+      Satisfactory: 0,
+      Other: 0
+    };
+
+    const PASSWORD = "admin123";
+
+    function submitFeedback(type) {
+      counts[type]++;
+      document.getElementById(type.toLowerCase() + "Count").textContent = counts[type];
+
+      // Disable all buttons for 5 seconds
+      disableButtons(true);
+      setTimeout(() => disableButtons(false), 5000);
+    }
+
+    function disableButtons(state) {
+      document.getElementById("btnExcellent").disabled = state;
+      document.getElementById("btnGood").disabled = state;
+      document.getElementById("btnSatisfactory").disabled = state;
+      document.getElementById("btnOther").disabled = state;
+    }
+
+    function checkPassword() {
+      const enteredPassword = document.getElementById("passwordInput").value;
+      if (enteredPassword === PASSWORD) {
+        document.getElementById("countsSection").style.display = "block";
+        document.getElementById("errorMsg").textContent = "";
+      } else {
+        document.getElementById("errorMsg").textContent = "Incorrect password. Try again.";
+        document.getElementById("countsSection").style.display = "none";
+      }
+    }
+  </script>
+
+</body>
+</html>
